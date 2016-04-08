@@ -2,10 +2,10 @@
 #	N::Int
 #	- the problem size
 #       M::Int
-#       - the module     
+#       - the module
 # Return Values
 #	YSR::Array{Array{Array{SparseMatrixCSC, 1}, 1}, 1} (Young's Seminormal Representations)
-#	- YSR[n][p][k] is Young's Seminormal Representation for the Adjacent Transposition (K, K + 1) 
+#	- YSR[n][p][k] is Young's Seminormal Representation for the Adjacent Transposition (K, K + 1)
 #         for the pth Partition of n
 #	PT::Array{Array{Array{Int, 1}, 1}, 1} (Partition Tree)
 #	- output1 from partition_tree()
@@ -34,8 +34,8 @@ end
 # Parameter
 #	N::Int
 #	- the size of P
-#       M::Int 
-#       - the module     
+#       M::Int
+#       - the module
 #	R::Int
 #	- the length of P
 #	P::Array{Int, 1}
@@ -54,9 +54,9 @@ function YSR_p(N::Int, M::Int, R::Int, YSymbols::Array{Array{Int, 1}, 1})
 end
 
 #Parameters
-#       M::Int 
-#       - the module     
-#	DA::Array{Int, 2}  
+#       M::Int
+#       - the module
+#	DA::Array{Int, 2}
 #	- output1 from ys_information()
 #	IA::Array{Int, 2}
 #	- outpu2 from ys_information()
@@ -65,7 +65,7 @@ end
 #	K::Int
 #	- represents the Adjacent Transposition (K, K + 1)
 #Return Values
-#	YSRpk::SparseMatrixCSC 
+#	YSRpk::SparseMatrixCSC
 #	- Young's Seminormal Representation of the Adjacent Transposition (K, K + 1) for the Partition p
 function YSR_pk(M::Int, DA::Array{Int, 2}, IA::Array{Int, 2}, L::Int, k::Int)
 	n = L
@@ -86,7 +86,7 @@ function YSR_pk(M::Int, DA::Array{Int, 2}, IA::Array{Int, 2}, L::Int, k::Int)
 		if I == 0
 			colptr[i + 1] = colptr[i] + 1
 			rowval[cp] = i
-			nzval[cp] = big((M + sign(Dik)) % M)
+			nzval[cp] = big((M + sign(Dik)) % M) # [original SnFFT] nzval[cp] = D
 			cp += 1
 		else
 			colptr[i + 1] = colptr[i] + 2
@@ -95,11 +95,11 @@ function YSR_pk(M::Int, DA::Array{Int, 2}, IA::Array{Int, 2}, L::Int, k::Int)
 				nzval[cp] = big(D)
 				cp += 1
 				rowval[cp] = I
-				nzval[cp] = big(1)
+				nzval[cp] = big(1) # [original SnFFT] nzval[cp] = sqrt(1 - D * D)
 				cp += 1
 			else
 				rowval[cp] = I
-				nzval[cp] = (M + (M + 1 - D * D % M) % M) % M
+        nzval[cp] = (M + (M + 1 - D * D % M) % M) % M # [original SnFFT] nzval[cp] = sqrt(1 - D * D)
 				cp += 1
 				rowval[cp] = i
 				nzval[cp] = big(D)
@@ -107,7 +107,6 @@ function YSR_pk(M::Int, DA::Array{Int, 2}, IA::Array{Int, 2}, L::Int, k::Int)
 			end
 		end
 	end
-	YSRpk = SparseMatrixCSC(L, L, colptr, rowval, nzval) 
+	YSRpk = SparseMatrixCSC(L, L, colptr, rowval, nzval)
 	return YSRpk
 end
-

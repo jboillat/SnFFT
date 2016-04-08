@@ -12,7 +12,7 @@
 # Return Values:
 #	FFT::Array{BigInt, 2}
 #	- FFT is the Fast Fourier Transform of SNF
-function sn_fft(N::Int, M::Int, SNF::Array{BigInt, 1}, YSR::Array{Array{Array{SparseMatrixCSC, 1}, 1}, 1}, PT::Array{Array{Array{Int, 1}, 1}, 1}) 
+function sn_fft(N::Int, M::Int, SNF::Array{BigInt, 1}, YSR::Array{Array{Array{SparseMatrixCSC, 1}, 1}, 1}, PT::Array{Array{Array{Int, 1}, 1}, 1})
 	np = nprocs()
 	if np == 1  # || N < 6
 		C = Counter(1)
@@ -167,18 +167,19 @@ function fc(N::Int, M::Int, YSRnp::Array{SparseMatrixCSC, 1}, PTnp::Array{Int, 1
 	FC = dsm(Dim, sFFT[N], PTnp)
 	CCM = eye(BigInt,Dim)
 	for n = (N - 1):-1:1
-		CCM = (big(YSRnp[n]) * CCM) % M #compute representation associated with [[n,N]]
+    # compute representation associated with [[n,N]]
+		CCM = (big(YSRnp[n]) * CCM) % M
 		DSM = big(dsm(Dim, sFFT[n], PTnp)) % M
 		FC_n = (big(CCM) * big(DSM)) % M
 		FC = (big(FC) + FC_n) % M
 	end
 	return (FC % M + M) % M
 end
-	
+
 function fc_remote(N::Int, M::Int, p::Int, RR_YSR::RemoteRef, RR_PT::RemoteRef, RR_sFFT::RemoteRef)
 	YSR = fetch(RR_YSR)
-	PT = fetch(RR_PT)	
-	sFFT = 	fetch(RR_sFFT) 
+	PT = fetch(RR_PT)
+	sFFT = 	fetch(RR_sFFT)
 	FC = fc(N, M, YSR[N][p], PT[N][p], sFFT)
 	return FC
 end
@@ -191,8 +192,8 @@ end
 #	PTnp::Array{Int, 1}
 #	- same as in fc()
 # Return Values:
-#	DSM::Array{BigInt, 2} (Direct Sum Matrix) 
-#	- the direct sum of the coefficients of sFFTn that correspond to the Partitions indicated by PTnp 
+#	DSM::Array{BigInt, 2} (Direct Sum Matrix)
+#	- the direct sum of the coefficients of sFFTn that correspond to the Partitions indicated by PTnp
 function dsm(Dim::Int, sFFTn::Array{Array{BigInt, 2}, 1}, PTnp::Array{Int, 1})
 	DSM = zeros(BigInt, Dim, Dim)
 	offset = 0
@@ -211,4 +212,3 @@ function dsm(Dim::Int, sFFTn::Array{Array{BigInt, 2}, 1}, PTnp::Array{Int, 1})
 	end
 	return DSM
 end
-

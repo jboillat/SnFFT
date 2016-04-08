@@ -88,7 +88,7 @@ function compute_ifft(N::Int, M::Int, SNF::Array{BigInt, 1}, FFT::Array{Array{Bi
 	if N == 2
 		YSRn = YSR[2]
 		sFFT = (invmod(big(2),M) * ((big(full(YSRn[1][1])) * FFT[1]) %  M + (big(full(YSRn[2][1])) * FFT[2])) % M) % M
-		SNF[C.N] = sFFT[1,1] 
+		SNF[C.N] = sFFT[1,1]
 		C.N += 1
 		sFFT = (invmod(big(2),M) * (FFT[1] + FFT[2]) % M) % M
 		SNF[C.N] = sFFT[1,1]
@@ -136,10 +136,12 @@ end
 function update_sfft!(N::Int, M::Int, n::Int, sFFT::Array{Array{BigInt, 2}, 1}, FFTp::Array{BigInt, 2}, YSRnp::Array{SparseMatrixCSC, 1}, YSRd::Array{Array{SparseMatrixCSC, 1}, 1}, PTnp::Array{Int, 1})
         Dim = size(YSRnp[1], 1)
 	P = eye(BigInt, Dim, Dim)
+  # compute the inverse of [[n,N]]
 	for ccn = n:(N - 1)
-	  P = (big(YSRnp[ccn]) * P) % M #compute the inverse of [[n,N]]
+	  P = (big(YSRnp[ccn]) * P) % M # [original SnFFT] P = P * YSRnp[ccn]
 	end
-        P = P % M
+  # [original SnFFT] P = transpose(P)
+  P = P % M
 	P = (P * big(FFTp)) % M
 	lb = 1
 	for d = 1:length(PTnp)
@@ -194,5 +196,4 @@ function compute_sifft_remote(N::Int, M::Int, n::Int, RR_FFT::RemoteRef, RR_YSR:
 	PT = fetch(RR_PT)
 	pSNF = compute_sifft(N, M, n, FFT, YSR, PT)
 	return pSNF
-end 
-
+end
