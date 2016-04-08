@@ -5,7 +5,7 @@ The original &#x1D54A;<sub>n</sub>FFT package is a Julia package designed to fac
 The main differences are the following:
 
   * Young seminormal representations instead of Young orthogonal representations
-  * Working with `BigInt` modulo `p` (`p` prime) instead of `Float64`
+  * Working with `BigInt` modulo p (p prime) instead of `Float64`
 
 Out of the box, this &#x1D54A;<sub>n</sub>FFT version implements:
 
