@@ -1,16 +1,17 @@
-# SnFFT
+# &#x1D54A;<sub>n</sub>FFT
 
-The original SnFFT package is Julia package designed to facilitate harmonic analysis on the symmetric group of order n, denoted Sn .
-SnFFT can be downloaded [here](https://github.com/GDPlumb/SnFFT.jl) . This version is based on representations of Sn with values in a finite field.
-The main differences are the following :
+The original &#x1D54A;<sub>n</sub>FFT package is a Julia package designed to facilitate harmonic analysis on the symmetric group of order n, denoted &#x1D54A;<sub>n</sub>. &#x1D54A;<sub>n</sub>FFT can be downloaded [here](https://github.com/GDPlumb/SnFFT.jl). This version is based on representations of &#x1D54A;<sub>n</sub> with values in a finite field &#x1D53D;<sub>p</sub>.
+
+The main differences are the following:
+
   * Young seminormal representations instead of Young orthogonal representations
-  * Working with BigInt modulo M (M prime) instead of Float64
+  * Working with `BigInt` modulo `p` (`p` prime) instead of `Float64`
 
-Out of the box, this SnFFT version implements:
+Out of the box, this &#x1D54A;<sub>n</sub>FFT version implements:
 
-  *  Group operations and factorizations for Sn
-  *  Functionality to set up functions over Sn
+  *  Group operations and factorizations for &#x1D54A;<sub>n</sub>
+  *  Functionality to set up functions over &#x1D54A;<sub>n</sub>
   *  The fast Fourier transform
   *  The inverse fast Fourier transform
-  *  The fast convolution product of functions over Sn
-  *  The fast exponentiation for the convolution product over Sn
+  *  The fast convolution product of functions over &#x1D54A;<sub>n</sub>
+  *  The fast exponentiation for the convolution product over &#x1D54A;<sub>n</sub>
