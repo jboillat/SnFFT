@@ -2,7 +2,7 @@
 
 The original &#x1D54A;<sub>n</sub>FFT package is a Julia package designed to facilitate harmonic analysis on the symmetric group of order n, denoted &#x1D54A;<sub>n</sub>. &#x1D54A;<sub>n</sub>FFT can be downloaded [here](https://github.com/GDPlumb/SnFFT.jl). This version is based on representations of &#x1D54A;<sub>n</sub> with values in a finite field &#x1D53D;<sub>p</sub>.
 
-The main differences are the following:
+The two main differences between the packages are the following:
 
   * Young seminormal representations instead of Young orthogonal representations
   * Working with `BigInt` modulo p (p prime) instead of `Float64`
